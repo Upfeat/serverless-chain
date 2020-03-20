@@ -31,4 +31,5 @@ $ BROWSER=/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome sls log
 ### deploy
 ```
 $ sls deploy
+$ sls deploy --stage dev --project my-project
 ```
