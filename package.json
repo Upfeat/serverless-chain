@@ -1,14 +1,16 @@
 {
-  "name": "chain-database",
+  "name": "chain-app",
   "version": "0.0.1",
-  "description": "Chain Database",
+  "description": "Chain App",
   "main": "index.js",
   "scripts": {
-    "test": "npm --prefix ./../ test database"
+    "test": "serverless-bundle test"
   },
   "author": "upfeat",
   "license": "MIT",
   "devDependencies": {
+    "serverless-bundle": "^1.3.2",
+    "serverless-dotenv-plugin": "^2.3.2",
     "serverless-google-cloudfunctions": "^2.4.1"
   },
   "dependencies": {}

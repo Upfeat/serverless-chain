@@ -4,7 +4,7 @@
   "description": "Chain Location API",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "npm --prefix ./../ test location-api"
   },
   "author": "upfeat",
   "license": "MIT",
