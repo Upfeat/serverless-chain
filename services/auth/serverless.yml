@@ -1,0 +1,59 @@
+service: auth
+
+custom:
+  # Our stage is based on what is passed in when running serverless
+  # commands. Or fallsback to what we have set in the provider section.
+  stage: ${opt:stage, dev}
+  project: ${opt:project, my-project}
+
+provider:
+  name: google
+  stage: ${self:custom.stage}
+  runtime: nodejs10
+  region: us-central1
+  project: ${self:custom.project}
+
+  # The GCF credentials can be a little tricky to set up. Luckily we've documented this for you here:
+  # https://serverless.com/framework/docs/providers/google/guide/credentials/
+  #
+  # the path to the credentials file needs to be absolute
+  credentials: ~/.gcloud/keyfile.json
+  environment:
+    DB_HOST: ${param:DB_HOST, 'localhost'}
+    DB_NAME: ${param:DB_NAME, 'localdbname'}
+    DB_PASSWORD: ${param:DB_PASSWORD, 'localdbpass'}
+    DB_USERNAME: ${param:DB_USERNAME, 'localdbusername'}
+
+plugins:
+  - serverless-google-cloudfunctions
+
+# needs more granular excluding in production as only the serverless provider npm
+# package should be excluded (and not the whole node_modules directory)
+package:
+  exclude:
+    - node_modules/**
+    - .gitignore
+    - .git/**
+
+functions:
+  first:
+    handler: http
+    events:
+      - http: path
+  # NOTE: the following uses an "event" event (pubSub event in this case).
+  # Please create the corresponding resources in the Google Cloud
+  # before deploying this service through Serverless
+  #second:
+  #  handler: event
+  #  events:
+  #    - event:
+  #        eventType: providers/cloud.pubsub/eventTypes/topic.publish
+  #        resource: projects/*/topics/my-topic
+# you can define resources, templates etc. the same way you would in a
+# Google Cloud deployment configuration
+#resources:
+#  resources:
+#    - type: storage.v1.bucket
+#      name: my-serverless-service-bucket
+#  imports:
+#    - path: my_template.jinja
