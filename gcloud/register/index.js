@@ -76,15 +76,16 @@ createPool();
 const ensureSchema = async () => {
   // Wait for tables to be created (if they don't already exist).
   await pool.query(
-    `CREATE TABLE IF NOT EXISTS votes
-      ( vote_id SERIAL NOT NULL, time_cast timestamp NOT NULL,
-      candidate CHAR(6) NOT NULL, PRIMARY KEY (vote_id) );`
+    `CREATE TABLE IF NOT EXISTS users
+      ( vote_id SERIAL NOT NULL,
+        time_cast timestamp NOT NULL,
+        candidate CHAR(6) NOT NULL,
+        PRIMARY KEY (vote_id) );`
   );
 };
 ensureSchema();
 
 const registerUser = (req, res) => {
-{
   const {team} = req.body;
   const timestamp = new Date();
 
@@ -97,7 +98,7 @@ const registerUser = (req, res) => {
     const stmt = 'INSERT INTO votes (time_cast, candidate) VALUES (?, ?)';
     // Pool.query automatically checks out, uses, and releases a connection
     // back into the pool, ensuring it is always returned successfully.
-    await pool.query(stmt, [timestamp, team]);
+    pool.query(stmt, [timestamp, team]);
   } catch (err) {
     // If something goes wrong, handle the error in this section. This might
     // involve retrying or adjusting parameters depending on the situation.
@@ -114,4 +115,4 @@ const registerUser = (req, res) => {
   // [END cloud_sql_mysql_mysql_connection]
 
   res.status(200).send(`Successfully voted for ${team} at ${timestamp}`).end();
-}
+};

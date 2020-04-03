@@ -13,7 +13,7 @@ $ npm i
 ### local
 ```
 $ functions-framework --target=pushNotifications
-$ curl -X POST "http://localhost:8080" -H "Content-Type:application/json" --data '{"title":"Title", "body": "Body"}'
+$ curl -d "@mock.json" -X POST "http://localhost:8080" -H "Content-Type:application/json"
 ```
 
 ### deploy
